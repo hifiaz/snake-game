@@ -55,7 +55,7 @@ class SnakeState extends State<Snake> {
     snakeDirection = 20; // up
     isGameOver = false;
     generateNewFood();
-    timer = Timer.periodic(const Duration(milliseconds: 400), (Timer timer) {
+    timer = Timer.periodic(const Duration(milliseconds: 250), (Timer timer) {
       updateGame();
     });
   }
