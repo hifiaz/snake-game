@@ -8,6 +8,7 @@ import 'package:signals/signals_flutter.dart';
 import 'package:ular_berbisa/utils/env.dart';
 
 final backgroundMusic = signal(true);
+final hightScore = signal(0);
 
 class Snake extends StatefulWidget {
   const Snake({super.key});
@@ -22,7 +23,7 @@ class SnakeState extends State<Snake> {
   final player = AudioPlayer();
   final int squaresPerRow = 20;
   final int squaresPerCol = 40;
-  final textStyle = const TextStyle(color: Colors.white, fontSize: 20);
+  final textStyle = const TextStyle(color: Colors.black, fontSize: 20);
   final randomGen = Random();
 
   late List<int> snakePosition;
@@ -51,6 +52,7 @@ class SnakeState extends State<Snake> {
     if (backgroundMusic.value) {
       playBackgroundMusic();
     }
+    loadAd();
     snakePosition = [45, 65, 85, 105, 125];
     snakeDirection = 20; // up
     isGameOver = false;
@@ -109,6 +111,9 @@ class SnakeState extends State<Snake> {
     timer.cancel();
     stopBackgroundMusic();
     await player.play(AssetSource('audio/gameover.mp3'));
+    if (snakePosition.length >= hightScore.value) {
+      hightScore.value = snakePosition.length;
+    }
     _interstitialAd?.show();
   }
 
@@ -145,7 +150,7 @@ class SnakeState extends State<Snake> {
                 },
                 icon: Icon(
                   music ? Icons.music_note_sharp : Icons.music_off_outlined,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
               ),
             ),
@@ -180,7 +185,7 @@ class SnakeState extends State<Snake> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(5),
                             child: Container(
-                              color: const Color(0xFFF8F4E1),
+                              color: const Color(0xee352b42),
                             ),
                           ),
                         );
@@ -201,7 +206,7 @@ class SnakeState extends State<Snake> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(5),
                             child: Container(
-                              color: const Color(0xFF74512D),
+                              color: const Color(0xffffffd1),
                             ),
                           ),
                         );
@@ -216,9 +221,16 @@ class SnakeState extends State<Snake> {
         if (isGameOver)
           Align(
             alignment: Alignment.center,
-            child: Text(
-              'Game Over',
-              style: textStyle,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Game Over',
+                  style: textStyle,
+                ),
+                Text('Hight Score: ${hightScore.watch(context)}',
+                    style: textStyle),
+              ],
             ),
           ),
         Align(

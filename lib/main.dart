@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const Scaffold(
-        backgroundColor: Color(0xff543310),
+        backgroundColor: Color(0xffffebb5),
         body: SafeArea(child: Snake()),
       ),
     );
